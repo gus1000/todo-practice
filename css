@@ -1,0 +1,56 @@
+
+
+body{
+  background: black;
+}
+ 
+.input-container {
+  display: flex;
+  justify-content: center;
+  
+  width : 100%;
+}
+
+.input {
+  color: red;
+    background: gray;
+  box-shadow: 2px 2px 3px 4px teal;
+  width: 75%
+
+}
+
+input[placeholder] {
+  background: #d6e5f9;
+}
+
+.task-status-container {
+  color: white;
+  margin-top: 50px;
+  background: #4a0389b8;
+  height: 350px;
+  width: 25%;
+    box-shadow: 2px 2px 3px 4px #0d7b7b;
+
+}
+.task-box {
+  gap: 25px;
+  display:flex;
+  justify-content: space-around;
+  
+  
+}
+/* 
+ul {
+  color: white;
+} */
+
+.list {
+  
+  display: flex;
+  align-items: center;
+}
+
+.button {
+  fonr-size: 12px;
+  border-radius: 2px;
+}
