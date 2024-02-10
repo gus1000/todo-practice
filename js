@@ -31,7 +31,7 @@ function createTask(task) {
 
   // list.appendChild(editButton);
   list.appendChild(deleteButton);
-  return { list, input, deleteButton };
+  return list;
 }
 
 inputEntry.addEventListener("keydown", function (e) {
@@ -41,15 +41,16 @@ inputEntry.addEventListener("keydown", function (e) {
     // localStorage.setItem("tasks", task);
     e.target.value = ``;
 
-    const { list, input, deleteButton } = createTask(task);
-    addTask.appendChild(list);
-    const checkbox = list.querySelector(`input[type="checkbox"]`);
+    const li = createTask(task);
+    console.log("li element", li);
+    addTask.appendChild(li);
+    const checkbox = li.querySelector(`input[type="checkbox"]`);
 
-    console.log(tasks);
+    // console.log(tasks);
 
     const nodeList = addTask.querySelectorAll("li input");
 
-     // Creating an array of children from the the node List that was queried
+    // Creating an array of children from the the node List that was queried
     const nodeArray = Array.from(nodeList);
     // console.log(nodeArray)
 
@@ -59,67 +60,127 @@ inputEntry.addEventListener("keydown", function (e) {
     //   });
     // });
 
+    //  deleteButton.addEventListener("click", function (e) {
+    //   // console.log(e);
+    //   addTask.removeChild(e.target);
+    // });
     let isChecked = false;
 
-    checkbox.addEventListener("click", function (e) {
-      if (isChecked === false) {
-        isChecked = true;
-
-        const index = nodeArray.indexOf(e.target);
-
-        // console.log("hi", index);
-
-        tasks.splice(index, 1);
-        //             const index = nodeArray.indexOf(e.target);
-
-        //             console.log("hi",index);
-
-        // console.log(e.target.value , "kd");
-
-        // console.log("checked", checkedTask);
-        // console.log("completed", completedTasks);
-
-        const listItem = checkbox.closest("li");
-        // console.log("listItem here", listItem.textContent);
-        listItem.remove();
-        
-        console.log("checking tasks", tasks);
-
-        taskCompleted.appendChild(listItem);
+    const deleteButton = li.querySelector("button");
+    
+    deleteButton.addEventListener("click", function (e) {
+      if (li.closest(".task-completed")) {
+        taskCompleted.removeChild(li);
       } else {
-        isChecked = false;
-
-        //         const nodeList = addTask.querySelectorAll("li input");
-
-        //         const nodeArray = Array.from(nodeList);
-
-        const index = nodeArray.indexOf(e.target);
-
-        // console.log("hi", index);
-
-        const listItem = checkbox.closest("li");
-        const listText =  listItem.childNodes[0].textContent;
-        console.log(listText);
-
-        listItem.remove();
-
-        completedTasks.splice(index, 1);
-
-        addTask.appendChild(listItem);
-        
-        tasks.push(listText);
-        // console.log("repopulating a task",tasks);
-        // tasks.push(e.target.value);
-        // console.log(e.target.value);
-        // console.log("tasks array again", tasks);
+        addTask.removeChild(li);
       }
     });
 
-    //     deleteButton.addEventListener("click", function (e) {
-    //       // console.log(e);
-    //       addTask.removeChild(list);
-    //     });
+  
+
+    if (isChecked === false) {
+      checkbox.addEventListener("click", function (e) {
+        //       const listItem = checkbox.closest("li");
+        //       const secondDeleteButton = document.querySelector(listItem);
+        //       secondDeleteButton.addEventListener("click", function(e) {
+
+        //         taskCompleted.removeChild(listItem)
+
+        //       })
+
+        if (isChecked === false) {
+          isChecked = true;
+
+          const index = nodeArray.indexOf(e.target);
+
+          // console.log("hi", index);
+
+          const splicedTask = tasks.splice(index, 1);
+
+          const listItem = checkbox.closest("li");
+          const listText = listItem.childNodes[0].textContent;
+          completedTasks.push(listText);
+
+          // console.log("listItem here", listItem.textContent);
+          listItem.remove();
+          //I use this logic to empty the array. Otherwise, the array does not empty.
+          if (splicedTask.length === 0) {
+            tasks.length = 0;
+          }
+          // console.log("spliced element",splicedTask);
+          //             const index = nodeArray.indexOf(e.target);
+
+          //             console.log("hi",index);
+
+          // console.log(e.target.value , "kd");
+
+          // console.log("checked", checkedTask);
+          // console.log("completed", completedTasks);
+
+          // console.log("checking tasks", tasks);
+
+          taskCompleted.appendChild(listItem);
+        } else {
+          isChecked = false;
+
+          //         const nodeList = addTask.querySelectorAll("li input");
+
+          //         const nodeArray = Array.from(nodeList);
+
+          const index = nodeArray.indexOf(e.target);
+
+          // console.log("hi", index);
+
+          const listItem = checkbox.closest("li");
+
+          // // creating a delete button for the taks completed container
+          // const secondDeleteButton = listItem.querySelector("button");
+          // //Need to Fix this.
+
+          // secondDeleteButton.addEventListener("click", function (e) {
+          //   taskCompleted.removeChild(listItem);
+          // });
+
+          const listText = listItem.childNodes[0].textContent;
+          // console.log(listText);
+
+          listItem.remove();
+
+          const splicedCompletedTasks = completedTasks.splice(index, 1);
+
+          tasks.push(listText);
+
+          // console.log("repopulating a task",tasks);
+          // tasks.push(e.target.value);
+          // console.log(e.target.value);
+          // console.log("tasks array again", tasks);
+
+          if (splicedCompletedTasks.length === 0) {
+            completedTasks.length = 0;
+          }
+
+          //      deleteButton.addEventListener("click", function (e) {
+          //   // console.log(e);
+          //   addTask.removeChild(list);
+          // });
+          //  console.log("completed Tasks Array", completedTasks);
+          // console.log("checking the  tasks array", tasks);
+          addTask.appendChild(listItem);
+
+          const deleteButton = li.querySelector("button");
+
+          //         const deleteButton = listItem.querySelector("button");
+
+          //         deleteButton.addEventListener("click", function (e) {
+          //           console.log(taskCompleted);
+          //           console.log(listItem);
+          //           // taskCompleted.removeChild(listItem);
+          //         });
+        }
+      });
+    }
   }
+    
 });
 
 // console.log(checkbox);
